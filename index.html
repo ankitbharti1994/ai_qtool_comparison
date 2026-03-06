@@ -3,407 +3,306 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agentic Coding Tools: Executive Briefing</title>
+    <title>Agentic Tools: VS Code & Beyond</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Chosen Palette: Slate and Indigo (Professional, tech-focused, neutral background) -->
-    <!-- Application Structure Plan: A dashboard-style executive briefing. Starts with an Executive Summary highlighting current Copilot ROI to anchor value. Moves to an interactive 'Contenders' section using tabs to avoid overwhelming text, allowing leadership to drill into specific tools. Concludes with a holistic Radar Chart (Feature Matrix) for a visual summary of tradeoffs, ending with a clear architectural recommendation. This structure guides leaders from established value to future potential seamlessly. -->
-    <!-- Visualization & Content Choices: 1. Current ROI -> Goal: Inform -> Doughnut Chart -> Interaction: Hover -> Justification: Clearly shows time saved visually -> Chart.js. 2. Tool Deep Dive -> Goal: Compare -> Interactive Tabs & Bullet Lists -> Interaction: Click tabs -> Justification: Consolidates heavy text into digestible chunks -> Vanilla JS + HTML. 3. Feature Matrix -> Goal: Relationships/Compare -> Radar Chart -> Interaction: Hover/Toggle datasets -> Justification: Best for multi-dimensional comparison of complex tools -> Chart.js. Confirming NO SVG/Mermaid. -->
+    <!-- Chosen Palette: Slate, Indigo, and Emerald (Balanced, high-contrast, clean professional background) -->
+    <!-- Application Structure Plan: A comparative technical report designed for leadership. It starts with a situational analysis (User's current success with VS Code + Copilot), moves into a side-by-side technical breakdown of the three major paradigms, and uses a Radar chart to visualize the trade-offs. The structure is chosen to validate current successes before proposing incremental upgrades. -->
+    <!-- Visualization & Content Choices: 1. Current ROI -> Goal: Inform -> Bar Chart -> Interaction: Highlight segments -> Justification: Shows clear 60% efficiency gap. 2. Comparative Analysis -> Goal: Compare -> Functional Tabs -> Interaction: Tab switching -> Justification: Handles high density of bullet points without visual clutter. 3. Capability Matrix -> Goal: Relationships -> Radar Chart -> Interaction: Hover to compare -> Justification: Best for multi-factor tool evaluation. Confirming NO SVG/Mermaid. -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
         .chart-container { 
             position: relative; 
             width: 100%; 
-            max-width: 600px; 
+            max-width: 700px; 
             margin-left: auto; 
             margin-right: auto; 
-            height: 300px; 
-            max-height: 400px; 
+            height: 350px; 
+            max-height: 450px; 
         }
-        .large-chart-container {
-            position: relative; 
-            width: 100%; 
-            max-width: 800px; 
-            margin-left: auto; 
-            margin-right: auto; 
-            height: 400px; 
-            max-height: 500px; 
-        }
-        @media (min-width: 768px) { 
-            .chart-container { height: 350px; } 
-            .large-chart-container { height: 450px; }
-        }
-        .tab-active { border-bottom-color: #4f46e5; color: #4f46e5; font-weight: 600; }
-        .tab-inactive { border-bottom-color: transparent; color: #64748b; }
-        .fade-in { animation: fadeIn 0.3s ease-in-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        .tab-active { border-bottom: 3px solid #4f46e5; color: #4f46e5; font-weight: 700; }
+        .tab-inactive { border-bottom: 3px solid transparent; color: #94a3b8; }
+        .feature-card { transition: transform 0.2s ease; }
+        .feature-card:hover { transform: translateY(-2px); }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800">
+<body class="bg-slate-50 text-slate-900 antialiased">
 
-    <nav class="bg-white border-b border-slate-200 sticky top-0 z-10 shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                <div class="flex items-center">
-                    <span class="text-2xl mr-2">&#128187;</span>
-                    <span class="font-bold text-xl text-slate-900 tracking-tight">AI Engineering Evaluation</span>
-                </div>
-                <div class="flex items-center space-x-4">
-                    <a href="#summary" class="text-sm font-medium text-slate-600 hover:text-indigo-600">ROI Context</a>
-                    <a href="#contenders" class="text-sm font-medium text-slate-600 hover:text-indigo-600">Tool Analysis</a>
-                    <a href="#matrix" class="text-sm font-medium text-slate-600 hover:text-indigo-600">Feature Matrix</a>
-                </div>
+    <nav class="bg-white border-b border-slate-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between h-16 items-center">
+            <div class="flex items-center space-x-2">
+                <div class="w-8 h-8 bg-indigo-600 rounded flex items-center justify-center text-white font-bold">A</div>
+                <span class="font-bold text-lg tracking-tight">Agentic Tooling Report</span>
+            </div>
+            <div class="hidden md:flex space-x-8 text-sm font-medium text-slate-500">
+                <a href="#baseline" class="hover:text-indigo-600 transition">Current Baseline</a>
+                <a href="#comparison" class="hover:text-indigo-600 transition">Tool Research</a>
+                <a href="#matrix" class="hover:text-indigo-600 transition">Capability Matrix</a>
             </div>
         </div>
     </nav>
 
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
 
-        <header class="text-center max-w-3xl mx-auto">
-            <h1 class="text-4xl font-extrabold text-slate-900 mb-4 tracking-tight">Evaluating the Next Generation of Agentic Coding</h1>
-            <p class="text-lg text-slate-600">An architectural briefing for leadership on upgrading our AI tooling stack. Prepared by Senior iOS Engineering.</p>
+        <!-- Executive Summary Section -->
+        <header class="mb-16">
+            <div class="inline-block px-3 py-1 bg-indigo-100 text-indigo-700 rounded-full text-xs font-bold uppercase tracking-wider mb-4">
+                Strategy Briefing
+            </div>
+            <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 mb-6 leading-tight">
+                Optimizing Engineering Productivity:<br><span class="text-indigo-600 text-3xl md:text-4xl">From Autocomplete to Autonomous Agents</span>
+            </h1>
+            <p class="text-xl text-slate-600 max-w-3xl leading-relaxed">
+                As a Senior iOS Engineer already achieving <strong>50-60% efficiency gains</strong> with GitHub Copilot in VS Code, the next step is moving from <i>assistive</i> coding to <i>agentic</i> workflows. This report evaluates how we can further amplify this productivity.
+            </p>
         </header>
 
-        <section id="summary" class="bg-white rounded-2xl shadow-sm border border-slate-100 p-8">
-            <div class="mb-6">
-                <h2 class="text-2xl font-bold text-slate-900 mb-2">1. Current State: The Value of AI Automation</h2>
-                <p class="text-slate-600 leading-relaxed">
-                    This section establishes our baseline ROI. As a Senior iOS Engineer, I am currently utilizing GitHub Copilot with custom instruction files to automate lengthy workflows, such as release activities and end-to-end component generation (from library to Storybook). The data below illustrates the massive efficiency gains we are already experiencing, setting the stage for why we must carefully evaluate the next evolution of these tools.
-                </p>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-                <div class="space-y-6">
-                    <div class="bg-indigo-50 rounded-xl p-6 border border-indigo-100">
-                        <h3 class="text-indigo-900 font-semibold mb-2 text-lg">Current Workflow Acceleration</h3>
-                        <p class="text-indigo-800 mb-4">By leveraging template-driven AI prompts, we have fundamentally reduced the time required to build and integrate standard UI components.</p>
-                        <div class="flex items-end gap-2">
-                            <span class="text-5xl font-black text-indigo-600">55%</span>
-                            <span class="text-indigo-800 font-medium pb-1">Average Time Saved</span>
+        <!-- Current Baseline -->
+        <section id="baseline" class="mb-20">
+            <div class="bg-white rounded-3xl p-8 md:p-12 shadow-sm border border-slate-200 grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="text-2xl font-bold mb-4">The VS Code + Copilot Baseline</h2>
+                    <p class="text-slate-600 mb-6">
+                        We are currently using the industry's most stable "Extension" model. By leveraging custom <code>.github/copilot-instructions.md</code> files, we've automated:
+                    </p>
+                    <div class="space-y-4">
+                        <div class="flex items-center space-x-3 p-3 bg-emerald-50 rounded-lg border border-emerald-100">
+                            <span class="text-xl">🛠️</span>
+                            <span class="text-sm text-emerald-900 font-medium">Release Workflow Automation (CI/CD integration)</span>
+                        </div>
+                        <div class="flex items-center space-x-3 p-3 bg-emerald-50 rounded-lg border border-emerald-100">
+                            <span class="text-xl">🎨</span>
+                            <span class="text-sm text-emerald-900 font-medium">Design System Scaffolding (Library → Storybook)</span>
+                        </div>
+                        <div class="flex items-center space-x-3 p-3 bg-emerald-50 rounded-lg border border-emerald-100">
+                            <span class="text-xl">⏱️</span>
+                            <span class="text-sm text-emerald-900 font-medium">Reduction of Dev work by ~60%</span>
                         </div>
                     </div>
-                    <ul class="space-y-3">
-                        <li class="flex items-start">
-                            <span class="text-green-500 mr-2">&#10004;</span>
-                            <span class="text-slate-700"><strong>Component Generation:</strong> Automated scaffolding of library components directly to Storybook testing.</span>
+                </div>
+                <div class="flex flex-col items-center">
+                    <div class="chart-container">
+                        <canvas id="efficiencyChart"></canvas>
+                    </div>
+                    <p class="mt-4 text-xs text-slate-400 font-mono italic">Fig 1.0: Impact of Instruction-Driven Automation</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Research Section -->
+        <section id="comparison" class="mb-20">
+            <h2 class="text-3xl font-bold mb-2">Deep-Dive Tool Comparison</h2>
+            <p class="text-slate-600 mb-8">Click the tabs below to understand the unique advantages of each ecosystem.</p>
+
+            <div class="flex border-b border-slate-200 mb-8 overflow-x-auto whitespace-nowrap">
+                <button onclick="switchTab('copilot')" id="tab-copilot" class="px-6 py-3 text-sm tab-active transition-all">GitHub Copilot (VS Code)</button>
+                <button onclick="switchTab('cursor')" id="tab-cursor" class="px-6 py-3 text-sm tab-inactive transition-all">Cursor (AI-Native IDE)</button>
+                <button onclick="switchTab('claude')" id="tab-claude" class="px-6 py-3 text-sm tab-inactive transition-all">Claude Code (CLI Agent)</button>
+            </div>
+
+            <div id="content-copilot" class="grid md:grid-cols-2 gap-10">
+                <div class="space-y-4">
+                    <h3 class="text-xl font-bold text-slate-800">The Reliable Extension Model</h3>
+                    <p class="text-slate-600">Copilot in VS Code is currently our "production-grade" standard. It excels because it integrates into a tool we already use for secondary dev tasks.</p>
+                    <ul class="space-y-2">
+                        <li class="flex items-start bg-white p-4 rounded-xl border border-slate-100 shadow-sm feature-card">
+                            <span class="mr-3 text-indigo-500 font-bold">•</span>
+                            <span><strong>Custom Instructions:</strong> Superior ability to ingest project-specific rules via markdown files to enforce design system standards.</span>
                         </li>
-                        <li class="flex items-start">
-                            <span class="text-green-500 mr-2">&#10004;</span>
-                            <span class="text-slate-700"><strong>Release Management:</strong> Scripting and automating repetitive pre-flight release checks.</span>
+                        <li class="flex items-start bg-white p-4 rounded-xl border border-slate-100 shadow-sm feature-card">
+                            <span class="mr-3 text-indigo-500 font-bold">•</span>
+                            <span><strong>Enterprise Governance:</strong> Unmatched security, data privacy, and IP protection backed by Microsoft/GitHub.</span>
                         </li>
-                        <li class="flex items-start">
-                            <span class="text-green-500 mr-2">&#10004;</span>
-                            <span class="text-slate-700"><strong>Boilerplate Reduction:</strong> Eliminating manual typing for standard iOS architectural patterns.</span>
+                        <li class="flex items-start bg-white p-4 rounded-xl border border-slate-100 shadow-sm feature-card">
+                            <span class="mr-3 text-indigo-500 font-bold">•</span>
+                            <span><strong>Extension Ecosystem:</strong> Allows us to use iOS-specific VS Code extensions alongside AI, which is impossible in standalone web agents.</span>
+                        </li>
+                        <li class="flex items-start bg-white p-4 rounded-xl border border-slate-100 shadow-sm feature-card">
+                            <span class="mr-3 text-indigo-500 font-bold">•</span>
+                            <span><strong>Familiarity:</strong> Zero learning curve. Productivity starts at 100% on Day 1.</span>
+                        </li>
+                        <li class="flex items-start bg-white p-4 rounded-xl border border-slate-100 shadow-sm feature-card">
+                            <span class="mr-3 text-indigo-500 font-bold">•</span>
+                            <span><strong>Multi-Model:</strong> Recent updates allow switching between GPT-4o and Claude 3.5 Sonnet within the chat.</span>
                         </li>
                     </ul>
                 </div>
-                <div class="w-full">
-                    <div class="chart-container">
-                        <canvas id="roiChart"></canvas>
-                    </div>
-                    <p class="text-center text-sm text-slate-500 mt-2">Hours spent per complex UI component (Traditional vs. AI-Assisted)</p>
+                <div class="bg-indigo-900 rounded-3xl p-8 text-white flex flex-col justify-center">
+                    <h4 class="text-indigo-300 font-bold uppercase text-xs tracking-widest mb-4">Pros for iOS Leaders</h4>
+                    <p class="text-2xl font-light italic">"The lowest risk, highest stability option for scaling across a team while maintaining existing VS Code workflows."</p>
+                </div>
+            </div>
+
+            <div id="content-cursor" class="hidden grid md:grid-cols-2 gap-10">
+                <div class="space-y-4">
+                    <h3 class="text-xl font-bold text-slate-800">The AI-First Transformation</h3>
+                    <p class="text-slate-600">Cursor is a fork of VS Code that rebuilds the UI around AI, enabling features that extensions simply cannot access.</p>
+                    <ul class="space-y-2">
+                        <li class="flex items-start bg-white p-4 rounded-xl border border-slate-100 shadow-sm feature-card">
+                            <span class="mr-3 text-blue-500 font-bold">•</span>
+                            <span><strong>Tab-Predict:</strong> Predicts your next 3-4 edits across different files before you even type them.</span>
+                        </li>
+                        <li class="flex items-start bg-white p-4 rounded-xl border border-slate-100 shadow-sm feature-card">
+                            <span class="mr-3 text-blue-500 font-bold">•</span>
+                            <span><strong>Composer (Agent):</strong> Can autonomously write code across 10+ files simultaneously to implement a whole feature.</span>
+                        </li>
+                        <li class="flex items-start bg-white p-4 rounded-xl border border-slate-100 shadow-sm feature-card">
+                            <span class="mr-3 text-blue-500 font-bold">•</span>
+                            <span><strong>Codebase Indexing:</strong> Uses high-speed local embeddings to "understand" your entire repo structure, not just open tabs.</span>
+                        </li>
+                        <li class="flex items-start bg-white p-4 rounded-xl border border-slate-100 shadow-sm feature-card">
+                            <span class="mr-3 text-blue-500 font-bold">•</span>
+                            <span><strong>Chat with Docs:</strong> Instantly syncs with latest iOS/Swift/React documentation by simply pasting a URL.</span>
+                        </li>
+                        <li class="flex items-start bg-white p-4 rounded-xl border border-slate-100 shadow-sm feature-card">
+                            <span class="mr-3 text-blue-500 font-bold">•</span>
+                            <span><strong>VS Code Compatible:</strong> Imports all your VS Code extensions/themes, making it a "drop-in" replacement.</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="bg-blue-900 rounded-3xl p-8 text-white flex flex-col justify-center">
+                    <h4 class="text-blue-300 font-bold uppercase text-xs tracking-widest mb-4">Pros for iOS Leaders</h4>
+                    <p class="text-2xl font-light italic">"Best for greenfield projects or massive refactors where multi-file context is the primary bottleneck."</p>
+                </div>
+            </div>
+
+            <div id="content-claude" class="hidden grid md:grid-cols-2 gap-10">
+                <div class="space-y-4">
+                    <h3 class="text-xl font-bold text-slate-800">The Terminal-Based Agent</h3>
+                    <p class="text-slate-600">Claude Code is a command-line interface (CLI) agent that operates like a virtual engineer sitting in your terminal.</p>
+                    <ul class="space-y-2">
+                        <li class="flex items-start bg-white p-4 rounded-xl border border-slate-100 shadow-sm feature-card">
+                            <span class="mr-3 text-emerald-500 font-bold">•</span>
+                            <span><strong>Tool Use (Action):</strong> Unlike IDEs, it can actually run terminal commands, execute tests, and fix errors based on logs.</span>
+                        </li>
+                        <li class="flex items-start bg-white p-4 rounded-xl border border-slate-100 shadow-sm feature-card">
+                            <span class="mr-3 text-emerald-500 font-bold">•</span>
+                            <span><strong>Autonomous Debugging:</strong> Give it a failing test; it will investigate, edit code, and verify the fix until it passes.</span>
+                        </li>
+                        <li class="flex items-start bg-white p-4 rounded-xl border border-slate-100 shadow-sm feature-card">
+                            <span class="mr-3 text-emerald-500 font-bold">•</span>
+                            <span><strong>Deep Reasoning:</strong> Powered by Claude 3.7 Sonnet, it is significantly better at complex architectural logic than autocomplete.</span>
+                        </li>
+                        <li class="flex items-start bg-white p-4 rounded-xl border border-slate-100 shadow-sm feature-card">
+                            <span class="mr-3 text-emerald-500 font-bold">•</span>
+                            <span><strong>IDE Agnostic:</strong> Works perfectly alongside Xcode or VS Code because it doesn't live inside them.</span>
+                        </li>
+                        <li class="flex items-start bg-white p-4 rounded-xl border border-slate-100 shadow-sm feature-card">
+                            <span class="mr-3 text-emerald-500 font-bold">•</span>
+                            <span><strong>File Mapping:</strong> Automatically identifies which files are relevant to a task without the user selecting them.</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="bg-emerald-900 rounded-3xl p-8 text-white flex flex-col justify-center">
+                    <h4 class="text-emerald-300 font-bold uppercase text-xs tracking-widest mb-4">Pros for iOS Leaders</h4>
+                    <p class="text-2xl font-light italic">"The ultimate tool for senior engineers to delegate entire tickets or bug-hunts while they focus on high-level design."</p>
                 </div>
             </div>
         </section>
 
-        <section id="contenders" class="bg-white rounded-2xl shadow-sm border border-slate-100 p-8">
-            <div class="mb-8">
-                <h2 class="text-2xl font-bold text-slate-900 mb-2">2. The Contenders: Deep Dive Analysis</h2>
-                <p class="text-slate-600 leading-relaxed">
-                    To maintain our competitive edge, we must evaluate tools beyond basic autocomplete. This section details the specific advantages of GitHub Copilot, Cursor, and Claude Code. Interact with the tabs below to explore my research on how each tool impacts our workflow, specifically from an iOS and frontend architectural perspective.
-                </p>
-            </div>
-
-            <div class="border-b border-slate-200 mb-6 flex space-x-8" id="tab-container">
-                <button class="pb-3 text-lg transition-colors tab-active" data-target="copilot">GitHub Copilot</button>
-                <button class="pb-3 text-lg transition-colors tab-inactive" data-target="cursor">Cursor</button>
-                <button class="pb-3 text-lg transition-colors tab-inactive" data-target="claude">Claude Code</button>
-            </div>
-
-            <div id="content-container" class="min-h-[300px]">
-                
-                <div id="copilot" class="fade-in grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    <div class="lg:col-span-2 space-y-4">
-                        <h3 class="text-xl font-bold text-slate-800 flex items-center">
-                            <span class="bg-slate-800 text-white text-xs px-2 py-1 rounded mr-2">Current Standard</span>
-                            GitHub Copilot
-                        </h3>
-                        <p class="text-slate-600">The established enterprise standard, functioning primarily as a highly advanced autocomplete and chat assistant embedded directly in existing IDEs.</p>
-                        <ul class="space-y-3 mt-4">
-                            <li class="flex items-start bg-slate-50 p-3 rounded-lg border border-slate-100">
-                                <span class="text-indigo-600 mr-3 mt-1">&#10148;</span>
-                                <span class="text-slate-700"><strong>Deep Ecosystem Integration:</strong> Native ties to GitHub Enterprise, Actions, and PR workflows, providing unmatched security and compliance peace of mind.</span>
-                            </li>
-                            <li class="flex items-start bg-slate-50 p-3 rounded-lg border border-slate-100">
-                                <span class="text-indigo-600 mr-3 mt-1">&#10148;</span>
-                                <span class="text-slate-700"><strong>iOS/Xcode Compatibility:</strong> Currently the most reliable option for native iOS developers via Xcode extensions, preventing context-switching to other editors.</span>
-                            </li>
-                            <li class="flex items-start bg-slate-50 p-3 rounded-lg border border-slate-100">
-                                <span class="text-indigo-600 mr-3 mt-1">&#10148;</span>
-                                <span class="text-slate-700"><strong>Workflow Automation:</strong> Excellent at executing custom instruction files (as currently used) to generate end-to-end components and boilerplate.</span>
-                            </li>
-                            <li class="flex items-start bg-slate-50 p-3 rounded-lg border border-slate-100">
-                                <span class="text-indigo-600 mr-3 mt-1">&#10148;</span>
-                                <span class="text-slate-700"><strong>File-Level Context:</strong> Highly accurate inline autocomplete based on the immediate files open in the editor workspace.</span>
-                            </li>
-                            <li class="flex items-start bg-slate-50 p-3 rounded-lg border border-slate-100">
-                                <span class="text-indigo-600 mr-3 mt-1">&#10148;</span>
-                                <span class="text-slate-700"><strong>Less Autonomous:</strong> Requires more manual prompting and step-by-step guidance compared to newer "agentic" tools; multi-file refactoring is largely manual.</span>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="bg-slate-50 rounded-xl p-6 border border-slate-200 flex flex-col justify-center">
-                        <h4 class="font-semibold text-slate-800 mb-4 text-center">Tool Focus Profile</h4>
-                        <div class="chart-container !h-64">
-                            <canvas id="barCopilot"></canvas>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="cursor" class="hidden fade-in grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    <div class="lg:col-span-2 space-y-4">
-                        <h3 class="text-xl font-bold text-slate-800 flex items-center">
-                            <span class="bg-blue-600 text-white text-xs px-2 py-1 rounded mr-2">Rising Challenger</span>
-                            Cursor
-                        </h3>
-                        <p class="text-slate-600">An AI-first fork of VS Code. It is built from the ground up to integrate AI models deep into the editing experience, rather than bolting them on as an extension.</p>
-                        <ul class="space-y-3 mt-4">
-                            <li class="flex items-start bg-slate-50 p-3 rounded-lg border border-slate-100">
-                                <span class="text-blue-600 mr-3 mt-1">&#10148;</span>
-                                <span class="text-slate-700"><strong>Agentic "Composer" Feature:</strong> Can autonomously edit multiple files simultaneously, implement complex features across a project, and handle project-wide refactoring.</span>
-                            </li>
-                            <li class="flex items-start bg-slate-50 p-3 rounded-lg border border-slate-100">
-                                <span class="text-blue-600 mr-3 mt-1">&#10148;</span>
-                                <span class="text-slate-700"><strong>Superior Context Management:</strong> Command+K interface easily references the entire codebase, external documentation links, and terminal output automatically.</span>
-                            </li>
-                            <li class="flex items-start bg-slate-50 p-3 rounded-lg border border-slate-100">
-                                <span class="text-blue-600 mr-3 mt-1">&#10148;</span>
-                                <span class="text-slate-700"><strong>Model Flexibility:</strong> Allows developers to switch between the smartest models on the fly (e.g., Claude 3.5 Sonnet for logic, GPT-4o for other tasks).</span>
-                            </li>
-                            <li class="flex items-start bg-slate-50 p-3 rounded-lg border border-slate-100">
-                                <span class="text-blue-600 mr-3 mt-1">&#10148;</span>
-                                <span class="text-slate-700"><strong>Predictive Edits:</strong> Anticipates the user's next move across different files, making multi-cursor editing and repetitive logic changes lightning fast.</span>
-                            </li>
-                            <li class="flex items-start bg-slate-50 p-3 rounded-lg border border-slate-100">
-                                <span class="text-orange-500 mr-3 mt-1">&#9888;</span>
-                                <span class="text-slate-700"><strong>iOS Friction:</strong> Being a VS Code fork, native iOS development is challenging. Requires context switching to Xcode for building/debugging, breaking the flow for iOS engineers.</span>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="bg-slate-50 rounded-xl p-6 border border-slate-200 flex flex-col justify-center">
-                        <h4 class="font-semibold text-slate-800 mb-4 text-center">Tool Focus Profile</h4>
-                        <div class="chart-container !h-64">
-                            <canvas id="barCursor"></canvas>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="claude" class="hidden fade-in grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    <div class="lg:col-span-2 space-y-4">
-                        <h3 class="text-xl font-bold text-slate-800 flex items-center">
-                            <span class="bg-teal-600 text-white text-xs px-2 py-1 rounded mr-2">Disruptive Paradigm</span>
-                            Claude Code
-                        </h3>
-                        <p class="text-slate-600">A purely terminal-based AI agent powered by Claude 3.7. It does not sit in the editor; it acts as an autonomous virtual team member in the CLI.</p>
-                        <ul class="space-y-3 mt-4">
-                            <li class="flex items-start bg-slate-50 p-3 rounded-lg border border-slate-100">
-                                <span class="text-teal-600 mr-3 mt-1">&#10148;</span>
-                                <span class="text-slate-700"><strong>True Autonomous Agent:</strong> Can read files, execute shell commands, run tests, and debug errors autonomously in a loop without continuous manual intervention.</span>
-                            </li>
-                            <li class="flex items-start bg-slate-50 p-3 rounded-lg border border-slate-100">
-                                <span class="text-teal-600 mr-3 mt-1">&#10148;</span>
-                                <span class="text-slate-700"><strong>Unmatched Architectural Reasoning:</strong> Powered by Claude 3.7 Sonnet, it excels at understanding massive, sprawling, undocumented codebases and finding obscure bugs.</span>
-                            </li>
-                            <li class="flex items-start bg-slate-50 p-3 rounded-lg border border-slate-100">
-                                <span class="text-teal-600 mr-3 mt-1">&#10148;</span>
-                                <span class="text-slate-700"><strong>Zero IDE Lock-in:</strong> Because it operates in the terminal, it works universally alongside Xcode, VS Code, or any text editor the team prefers.</span>
-                            </li>
-                            <li class="flex items-start bg-slate-50 p-3 rounded-lg border border-slate-100">
-                                <span class="text-teal-600 mr-3 mt-1">&#10148;</span>
-                                <span class="text-slate-700"><strong>Heavy Refactoring Specialist:</strong> Ideal for complex tasks like database migrations, massive API updates, or restructuring entire modules where inline autocomplete fails.</span>
-                            </li>
-                            <li class="flex items-start bg-slate-50 p-3 rounded-lg border border-slate-100">
-                                <span class="text-orange-500 mr-3 mt-1">&#9888;</span>
-                                <span class="text-slate-700"><strong>Steep Workflow Shift:</strong> Lacks the visual feedback of inline code suggestions. Moving from a visual GUI/IDE workflow to a conversational CLI workflow requires significant behavioral change.</span>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="bg-slate-50 rounded-xl p-6 border border-slate-200 flex flex-col justify-center">
-                        <h4 class="font-semibold text-slate-800 mb-4 text-center">Tool Focus Profile</h4>
-                        <div class="chart-container !h-64">
-                            <canvas id="barClaude"></canvas>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </section>
-
-        <section id="matrix" class="bg-slate-900 rounded-2xl shadow-xl border border-slate-800 p-8 text-white">
-            <div class="mb-8 text-center max-w-2xl mx-auto">
-                <h2 class="text-2xl font-bold mb-2">3. Multi-Dimensional Feature Matrix</h2>
-                <p class="text-slate-300">
-                    A comparative visualization mapping each tool against key engineering priorities. This highlights that no single tool is perfect, but rather each solves a distinct layer of the development lifecycle.
-                </p>
+        <!-- Matrix Visualization -->
+        <section id="matrix" class="mb-20">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-bold mb-4">The Capability Matrix</h2>
+                <p class="text-slate-600 max-w-2xl mx-auto">A visual representation of how these tools balance various engineering needs. Hover over the chart to compare specifics.</p>
             </div>
             
-            <div class="large-chart-container">
-                <canvas id="radarChart"></canvas>
-            </div>
-
-            <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6 text-sm">
-                <div class="bg-slate-800/50 p-4 rounded-lg border border-slate-700">
-                    <strong class="text-indigo-400 block mb-1">Copilot: The Baseline</strong>
-                    Best for line-by-line coding, immediate integration, and enterprise compliance. Highly compatible with our current Xcode/iOS setup.
-                </div>
-                <div class="bg-slate-800/50 p-4 rounded-lg border border-slate-700">
-                    <strong class="text-blue-400 block mb-1">Cursor: The Accelerator</strong>
-                    Best for full-stack and web teams wanting multi-file generation. Incredible speed, but introduces friction for native iOS compilation workflows.
-                </div>
-                <div class="bg-slate-800/50 p-4 rounded-lg border border-slate-700">
-                    <strong class="text-teal-400 block mb-1">Claude Code: The Architect</strong>
-                    Best for massive refactoring and deep debugging. Terminal native, making it an excellent side-by-side companion to Xcode without IDE lock-in.
+            <div class="bg-white rounded-3xl p-8 md:p-12 shadow-sm border border-slate-200">
+                <div class="large-chart-container h-[500px] relative">
+                    <canvas id="capabilityChart"></canvas>
                 </div>
             </div>
         </section>
 
-        <section class="bg-indigo-50 rounded-2xl p-8 border border-indigo-100 text-center">
-            <h2 class="text-2xl font-bold text-indigo-900 mb-4">Leadership Recommendation</h2>
-            <p class="text-slate-700 max-w-3xl mx-auto leading-relaxed mb-6">
-                Based on current metrics, <strong>maintaining GitHub Copilot as our base layer</strong> ensures stability and IDE compatibility (especially for Xcode). However, to move beyond the 50-60% efficiency gain and tackle multi-file system architecture, we should <strong>pilot Claude Code for our Senior Engineering cohort</strong>. Its CLI nature completely bypasses the Xcode integration issue that plagues Cursor, providing autonomous agentic capabilities alongside our existing visual workflows.
+        <footer class="bg-slate-900 text-white rounded-3xl p-10 text-center">
+            <h3 class="text-2xl font-bold mb-4">Final Recommendation for Leadership</h3>
+            <p class="text-slate-400 max-w-2xl mx-auto mb-8">
+                <strong>Current Strategy:</strong> Maintain GitHub Copilot in VS Code as the standard for daily UI/UX work and design system component generation. <br><br>
+                <strong>Future Pivot:</strong> Introduce <strong>Claude Code</strong> as a sidecar for Senior Engineers to handle complex bug-fixing and CI/CD scripting, as it offers the highest "agentic" autonomy without forcing a migration away from our existing VS Code/Xcode ecosystems.
             </p>
-            <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="bg-indigo-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-indigo-700 transition-colors">
-                Back to Top
-            </button>
-        </section>
+            <div class="flex justify-center space-x-4">
+                <span class="px-4 py-2 bg-slate-800 rounded-full text-xs font-mono uppercase">Version 2.0</span>
+                <span class="px-4 py-2 bg-slate-800 rounded-full text-xs font-mono uppercase">Agentic Focus</span>
+            </div>
+        </footer>
 
     </main>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            
-            Chart.defaults.font.family = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif';
-            Chart.defaults.color = '#64748b';
+        // Tab Switching Logic
+        function switchTab(tool) {
+            const tools = ['copilot', 'cursor', 'claude'];
+            tools.forEach(t => {
+                document.getElementById('content-' + t).classList.add('hidden');
+                document.getElementById('tab-' + t).classList.replace('tab-active', 'tab-inactive');
+            });
+            document.getElementById('content-' + tool).classList.remove('hidden');
+            document.getElementById('tab-' + tool).classList.replace('tab-inactive', 'tab-active');
+        }
 
-            const roiCtx = document.getElementById('roiChart').getContext('2d');
-            new Chart(roiCtx, {
-                type: 'doughnut',
+        window.onload = function() {
+            // Efficiency Chart
+            const effCtx = document.getElementById('efficiencyChart').getContext('2d');
+            new Chart(effCtx, {
+                type: 'bar',
                 data: {
-                    labels: ['Dev Time Required', 'Time Saved (Automation)'],
+                    labels: ['Component Gen', 'Workflow Setup', 'Release Prep'],
                     datasets: [{
-                        data: [45, 55],
-                        backgroundColor: ['#e2e8f0', '#4f46e5'],
-                        borderWidth: 0,
-                        hoverOffset: 4
+                        label: 'Manual Hours',
+                        data: [10, 8, 6],
+                        backgroundColor: '#cbd5e1'
+                    }, {
+                        label: 'Copilot + Instructions',
+                        data: [4, 3, 2.5],
+                        backgroundColor: '#4f46e5'
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    cutout: '70%',
                     plugins: {
-                        legend: { position: 'bottom' },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    return context.label + ': ' + context.parsed + '%';
-                                }
-                            }
-                        }
+                        legend: { position: 'bottom' }
+                    },
+                    scales: {
+                        y: { beginAtZero: true, title: { display: true, text: 'Time (Hours)' } }
                     }
                 }
             });
 
-            const barOptions = {
-                responsive: true,
-                maintainAspectRatio: false,
-                indexAxis: 'y',
-                scales: {
-                    x: { max: 100, display: false },
-                    y: { grid: { display: false } }
-                },
-                plugins: { legend: { display: false } }
-            };
-
-            const barCopilotCtx = document.getElementById('barCopilot').getContext('2d');
-            new Chart(barCopilotCtx, {
-                type: 'bar',
-                data: {
-                    labels: ['Autocomplete', 'Ecosystem Integration', 'iOS/Xcode Fit', 'Autonomy'],
-                    datasets: [{
-                        data: [95, 90, 85, 40],
-                        backgroundColor: '#4f46e5',
-                        borderRadius: 4
-                    }]
-                },
-                options: barOptions
-            });
-
-            const barCursorCtx = document.getElementById('barCursor').getContext('2d');
-            new Chart(barCursorCtx, {
-                type: 'bar',
-                data: {
-                    labels: ['Autocomplete', 'Multi-file Edits', 'iOS/Xcode Fit', 'Autonomy'],
-                    datasets: [{
-                        data: [90, 95, 30, 80],
-                        backgroundColor: '#2563eb',
-                        borderRadius: 4
-                    }]
-                },
-                options: barOptions
-            });
-
-            const barClaudeCtx = document.getElementById('barClaude').getContext('2d');
-            new Chart(barClaudeCtx, {
-                type: 'bar',
-                data: {
-                    labels: ['System Reasoning', 'Terminal Execution', 'iOS/Xcode Fit', 'Autonomy'],
-                    datasets: [{
-                        data: [98, 95, 75, 95],
-                        backgroundColor: '#0d9488',
-                        borderRadius: 4
-                    }]
-                },
-                options: barOptions
-            });
-
-            const radarCtx = document.getElementById('radarChart').getContext('2d');
-            new Chart(radarCtx, {
+            // Capability Matrix Chart
+            const capCtx = document.getElementById('capabilityChart').getContext('2d');
+            new Chart(capCtx, {
                 type: 'radar',
                 data: {
                     labels: [
-                        'Inline Coding Speed',
-                        'Multi-File Refactoring',
-                        'Complex Bug Reasoning',
-                        'Terminal Automation',
-                        'Xcode/iOS Compatibility',
-                        'Enterprise Security Fit'
+                        'Security/Governance',
+                        'Multi-File Autonomy',
+                        'Contextual Awareness',
+                        'Codebase Knowledge',
+                        'Action Execution (Tests)',
+                        'Native IDE Experience'
                     ],
                     datasets: [
                         {
-                            label: 'GitHub Copilot',
-                            data: [90, 40, 50, 20, 90, 95],
-                            backgroundColor: 'rgba(79, 70, 229, 0.2)',
-                            borderColor: 'rgba(79, 70, 229, 1)',
-                            pointBackgroundColor: 'rgba(79, 70, 229, 1)',
-                            borderWidth: 2
+                            label: 'GitHub Copilot (VS Code)',
+                            data: [95, 45, 70, 60, 20, 95],
+                            borderColor: '#4f46e5',
+                            backgroundColor: 'rgba(79, 70, 229, 0.1)',
+                            pointBackgroundColor: '#4f46e5'
                         },
                         {
                             label: 'Cursor',
-                            data: [95, 95, 80, 50, 30, 70],
-                            backgroundColor: 'rgba(37, 99, 235, 0.2)',
-                            borderColor: 'rgba(37, 99, 235, 1)',
-                            pointBackgroundColor: 'rgba(37, 99, 235, 1)',
-                            borderWidth: 2
+                            data: [70, 90, 95, 85, 40, 90],
+                            borderColor: '#2563eb',
+                            backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                            pointBackgroundColor: '#2563eb'
                         },
                         {
                             label: 'Claude Code',
-                            data: [30, 90, 100, 100, 75, 60],
-                            backgroundColor: 'rgba(13, 148, 136, 0.2)',
-                            borderColor: 'rgba(13, 148, 136, 1)',
-                            pointBackgroundColor: 'rgba(13, 148, 136, 1)',
-                            borderWidth: 2
+                            data: [60, 95, 85, 95, 100, 30],
+                            borderColor: '#10b981',
+                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                            pointBackgroundColor: '#10b981'
                         }
                     ]
                 },
@@ -412,47 +311,17 @@
                     maintainAspectRatio: false,
                     scales: {
                         r: {
-                            angleLines: { color: 'rgba(255, 255, 255, 0.1)' },
-                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
-                            pointLabels: { color: '#cbd5e1', font: { size: 12 } },
-                            ticks: { display: false, min: 0, max: 100 }
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: { display: false }
                         }
                     },
                     plugins: {
-                        legend: {
-                            position: 'bottom',
-                            labels: { color: '#f8fafc', padding: 20 }
-                        }
+                        legend: { position: 'bottom' }
                     }
                 }
             });
-
-            const tabs = document.querySelectorAll('#tab-container button');
-            const contents = document.querySelectorAll('#content-container > div');
-
-            tabs.forEach(tab => {
-                tab.addEventListener('click', () => {
-                    
-                    tabs.forEach(t => {
-                        t.classList.remove('tab-active', 'border-b-2');
-                        t.classList.add('tab-inactive');
-                    });
-                    tab.classList.remove('tab-inactive');
-                    tab.classList.add('tab-active', 'border-b-2');
-
-                    const targetId = tab.getAttribute('data-target');
-                    contents.forEach(content => {
-                        if (content.id === targetId) {
-                            content.classList.remove('hidden');
-                        } else {
-                            content.classList.add('hidden');
-                        }
-                    });
-                });
-            });
-            
-            tabs[0].classList.add('border-b-2');
-        });
+        };
     </script>
 </body>
 </html>
